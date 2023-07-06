@@ -10,6 +10,7 @@
 
 ### Tecnologias utilizadas:
 
-- Laravel
-- MySQL
-- PHP
+- Docker 4.21
+- Laravel 10.14
+- MySQL 8.0
+- PHP 8.1

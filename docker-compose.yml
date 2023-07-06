@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+    app:
+        container_name: php
+        image: php:8.1-apache
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/var/www/html
+            - ./.docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+        depends_on:
+            - db
+        networks:
+            - default
+
+    db:
+        container_name: mysql
+        image: mysql:latest
+        ports:
+            - "3306:3306"
+        volumes:
+            - .docker/db:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: bionexo
+            MYSQL_ROOT_PASSWORD: bionexo
+        networks:
+            - default
+
+networks:
+    default:
+        driver: bridge
