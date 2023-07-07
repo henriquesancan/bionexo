@@ -1,20 +1,21 @@
 version: "3.8"
 
 services:
-    app:
+    php:
         container_name: php
         image: php:8.1-apache
+        build: .
         ports:
             - "80:80"
         volumes:
             - ./:/var/www/html
             - ./.docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
         depends_on:
-            - db
+            - mysql
         networks:
             - default
 
-    db:
+    mysql:
         container_name: mysql
         image: mysql:latest
         ports:
