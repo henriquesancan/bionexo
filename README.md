@@ -2,7 +2,7 @@
 
 ### Objetivos:
 
-- [ ] Extrair e salvar dados de tabela HTML no banco de dados.
+- [X] Extrair e salvar dados de tabela HTML no banco de dados.
 - [ ] Preencher formulário externo com dados aleatórios.
 - [ ] Baixar arquivo a partir de link externo e renomeá-lo.
 - [ ] Fazer upload do arquivo recém-baixado em link externo.
