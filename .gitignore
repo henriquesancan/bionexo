@@ -1,5 +1,5 @@
-/.docker/db
 /.idea
+/docker/db
 /vendor/
 node_modules/
 npm-debug.log
