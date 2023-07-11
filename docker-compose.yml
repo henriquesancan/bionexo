@@ -12,6 +12,7 @@ services:
             - ./docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
         depends_on:
             - mysql
+            - chrome
         networks:
             - default
 
@@ -25,6 +26,14 @@ services:
         environment:
             MYSQL_DATABASE: bionexo
             MYSQL_ROOT_PASSWORD: bionexo
+        networks:
+            - default
+
+    chrome:
+        container_name: chrome
+        image: selenium/standalone-chrome:latest
+        ports:
+            - "4444:4444"
         networks:
             - default
 
