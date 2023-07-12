@@ -10,6 +10,7 @@ services:
         volumes:
             - ./:/var/www/html
             - ./docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+            - downloads:/var/www/html/public/files/downloads
         depends_on:
             - mysql
             - chrome
@@ -22,7 +23,7 @@ services:
         ports:
             - "3306:3306"
         volumes:
-            - ./docker/db:/var/lib/mysql
+            - ./docker/mysql:/var/lib/mysql
         environment:
             MYSQL_DATABASE: bionexo
             MYSQL_ROOT_PASSWORD: bionexo
@@ -34,8 +35,14 @@ services:
         image: selenium/standalone-chrome:latest
         ports:
             - "4444:4444"
+        volumes:
+            - downloads:/home/seluser
         networks:
             - default
+
+volumes:
+    downloads:
+        driver: local
 
 networks:
     default:
