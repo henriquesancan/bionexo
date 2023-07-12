@@ -1,6 +1,6 @@
 /.idea
 /.phpunit.cache
-/docker/db
+/docker/mysql
 /vendor/
 node_modules/
 npm-debug.log
