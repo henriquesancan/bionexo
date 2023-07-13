@@ -19,4 +19,4 @@ Route::get('/', function () {
 
 Route::get('/extracao', ['App\Http\Controllers\TabelaController', 'extracao']);
 
-Route::get('/pdf-csv', ['App\Http\Controllers\PDFController', 'converterPdf']);
+Route::get('/pdf-csv', ['App\Http\Controllers\CSVController', 'gerarCsv']);
