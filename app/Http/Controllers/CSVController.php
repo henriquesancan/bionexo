@@ -14,7 +14,7 @@ class CSVController extends Controller
     public function gerarCsv(): void
     {
         // Cria o objeto CSV a partir do caminho do arquivo e do modo de escrita
-        $csv = Writer::createFromPath(public_path('files/planilha.csv'), 'w+');
+        $csv = Writer::createFromString();
 
         // Insere o cabeçalho no arquivo CSV
         $csv->insertOne([
@@ -101,6 +101,6 @@ class CSVController extends Controller
         }
 
         // Gera a saída do arquivo CSV
-        $csv->output();
+        $csv->output('planilha.csv');
     }
 }
