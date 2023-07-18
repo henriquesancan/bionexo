@@ -26,4 +26,6 @@ Route::controller(SeleniumController::class)->group(function () {
     Route::get('/download', 'testDownload');
 
     Route::get('/formulario', 'testPreencheFormulario');
+
+    Route::get('/upload', 'testUpload');
 });

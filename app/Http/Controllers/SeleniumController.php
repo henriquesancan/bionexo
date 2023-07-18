@@ -131,4 +131,45 @@ class SeleniumController extends Controller
             return $feedback;
         }
     }
+
+    /**
+     * Testa o upload de arquivo.
+     */
+    public function testUpload()
+    {
+        $feedback = [
+            'success' => false,
+            'code' => 500,
+            'message' => 'Tente novamente mais tarde.'
+        ];
+
+        try {
+            $this->driver->get('https://testpages.herokuapp.com/styled/file-upload-test.html');
+
+            $this->driver->takeScreenshot(public_path('/prints/' . time() . '_upload_0.png'));
+
+            $this->driver->findElement(WebDriverBy::cssSelector('input[name="filename"]'))->sendKeys('/home/seluser/Downloads/Teste TKS.txt');
+            $this->driver->findElement(WebDriverBy::cssSelector('input[name="filetype"]'))->click();
+            $this->driver->findElement(WebDriverBy::cssSelector('input[type="submit"]'))->click();
+
+            $this->driver->takeScreenshot(public_path('/prints/' . time() . '_upload_1.png'));
+
+            $htmlContent = $this->driver->getPageSource();
+
+            $textToAssert = 'Uploaded File';
+
+            if (!strpos($htmlContent, $textToAssert)) throw new \Exception('Upload não concluido.');
+
+            $feedback['success'] = true;
+            $feedback['code'] = 200;
+            $feedback['message'] = 'Upload concluido com sucesso.';
+        } catch (\Exception $exception) {
+            $feedback['code'] = $exception->getCode();
+            $feedback['message'] = $exception->getMessage();
+        } finally {
+            $this->driver->quit();
+
+            return $feedback;
+        }
+    }
 }
