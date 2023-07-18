@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SeleniumController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,7 @@ Route::get('/', function () {
 Route::get('/extracao', ['App\Http\Controllers\TabelaController', 'extracao']);
 
 Route::get('/pdf-csv', ['App\Http\Controllers\CSVController', 'gerarCsv']);
+
+Route::controller(SeleniumController::class)->group(function () {
+    Route::get('/formulario', 'testPreencheFormulario');
+});

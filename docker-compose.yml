@@ -10,7 +10,6 @@ services:
         volumes:
             - ./:/var/www/html
             - ./docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
-            - downloads:/var/www/html/public/files/downloads
         depends_on:
             - mysql
             - chrome
@@ -36,7 +35,7 @@ services:
         ports:
             - "4444:4444"
         volumes:
-            - downloads:/home/seluser
+            - ./docker/files/bionexo.png:/home/seluser/Files/bionexo.png
         networks:
             - default
 
