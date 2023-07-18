@@ -4,12 +4,14 @@ services:
     php:
         container_name: php
         image: php:8.1-apache
+        user: "1000:1000"
         build: .
         ports:
             - "80:80"
         volumes:
             - ./:/var/www/html
             - ./docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+            - downloads:/var/www/html/public/downloads:rw
         depends_on:
             - mysql
             - chrome
@@ -35,7 +37,8 @@ services:
         ports:
             - "4444:4444"
         volumes:
-            - ./docker/files/bionexo.png:/home/seluser/Files/bionexo.png
+            - ./docker/files:/home/seluser/Files
+            - downloads:/home/seluser:rw
         networks:
             - default
 

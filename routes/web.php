@@ -23,5 +23,7 @@ Route::get('/extracao', ['App\Http\Controllers\TabelaController', 'extracao']);
 Route::get('/pdf-csv', ['App\Http\Controllers\CSVController', 'gerarCsv']);
 
 Route::controller(SeleniumController::class)->group(function () {
+    Route::get('/download', 'testDownload');
+
     Route::get('/formulario', 'testPreencheFormulario');
 });

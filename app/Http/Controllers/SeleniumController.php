@@ -7,6 +7,7 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Faker\Factory;
+use Illuminate\Support\Facades\File;
 
 class SeleniumController extends Controller
 {
@@ -26,6 +27,56 @@ class SeleniumController extends Controller
         $capabilities->setCapability(ChromeOptions::CAPABILITY, $options);
 
         $this->driver = RemoteWebDriver::create($host, $capabilities);
+    }
+
+    /**
+     * Testa o download de um arquivo.
+     */
+    public function testDownload()
+    {
+        $feedback = [
+            'success' => false,
+            'code' => 500,
+            'message' => 'Tente novamente mais tarde.'
+        ];
+
+        try {
+            $this->driver->get('https://testpages.herokuapp.com/styled/download/download.html');
+
+            $this->driver->takeScreenshot(public_path('/prints/' . time() . '_download_0.png'));
+
+            $this->driver->findElement(WebDriverBy::id('direct-download-a'))->click();
+
+            sleep(30);
+
+            $dir = public_path('/downloads/Downloads/');
+
+            if (is_dir($dir)) {
+                $files = collect(File::files($dir))->sortByDesc(function ($file) {
+                    return $file->getMTime();
+                });
+
+                if ($files->isNotEmpty()) {
+                    $arquivo = $files->first();
+                    $arquivo = $arquivo->getPathname();
+
+                    $extensao = pathinfo($arquivo, PATHINFO_EXTENSION);
+
+                    File::move($arquivo, public_path('/downloads/Downloads/Teste TKS.' . $extensao));
+                }
+            }
+
+            $feedback['success'] = true;
+            $feedback['code'] = 200;
+            $feedback['message'] = 'Download concluido com sucesso.';
+        } catch (\Exception $exception) {
+            $feedback['code'] = $exception->getCode();
+            $feedback['message'] = $exception->getMessage();
+        } finally {
+            $this->driver->quit();
+
+            return $feedback;
+        }
     }
 
     /**
