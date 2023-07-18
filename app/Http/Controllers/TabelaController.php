@@ -16,6 +16,7 @@ class TabelaController extends Controller
     {
         $feedback = [
             'success' => false,
+            'code' => 500,
             'message' => 'Tente novamente mais tarde.'
         ];
 
@@ -49,12 +50,14 @@ class TabelaController extends Controller
             }
 
             $feedback['success'] = true;
-            $feedback['message'] = null;
+            $feedback['code'] = 200;
+            $feedback['message'] = 'Extracao concluida com sucesso.';
 
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
 
+            $feedback['code'] = $exception->getCode();
             $feedback['message'] = $exception->getMessage();
         } finally {
             return $feedback;

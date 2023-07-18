@@ -18,9 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/extracao', ['App\Http\Controllers\TabelaController', 'extracao']);
-
 Route::get('/pdf-csv', ['App\Http\Controllers\CSVController', 'gerarCsv']);
+
+Route::get('/tabela', ['App\Http\Controllers\TabelaController', 'extracao']);
 
 Route::controller(SeleniumController::class)->group(function () {
     Route::get('/download', 'testDownload');

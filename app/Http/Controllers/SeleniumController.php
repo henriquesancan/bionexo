@@ -86,14 +86,14 @@ class SeleniumController extends Controller
     {
         $feedback = [
             'success' => false,
-            'message' => null
+            'code' => 500,
+            'message' => 'Tente novamente mais tarde.'
         ];
 
         try {
             $this->driver->get('https://testpages.herokuapp.com/styled/basic-html-form-test.html');
 
-            $screenshotPath = public_path('files/capturas/' . time() . '_formulario_0.png');
-            $this->driver->takeScreenshot($screenshotPath);
+            $this->driver->takeScreenshot(public_path('/prints/' . time() . '_formulario_0.png'));
 
             $faker = Factory::create();
 
@@ -108,22 +108,23 @@ class SeleniumController extends Controller
             $this->driver->findElement(WebDriverBy::cssSelector('select[name="multipleselect[]"]'))->sendKeys($faker->randomElements(['ms1', 'ms2', 'ms3', 'ms4'], 2));
             $this->driver->findElement(WebDriverBy::cssSelector('select[name="dropdown"]'))->sendKeys($faker->randomElement(['dd1', 'dd2', 'dd3', 'dd4', 'dd5', 'dd6']));
 
-            $screenshotPath = public_path('files/capturas/' . time() . '_formulario_1.png');
-            $this->driver->takeScreenshot($screenshotPath);
+            $this->driver->takeScreenshot(public_path('/prints/' . time() . '_formulario_1.png'));
 
             $this->driver->findElement(WebDriverBy::cssSelector('input[type="submit"]'))->click();
 
-            $screenshotPath = public_path('files/capturas/' . time() . '_formulario_2.png');
-            $this->driver->takeScreenshot($screenshotPath);
+            $this->driver->takeScreenshot(public_path('/prints/' . time() . '_formulario_2.png'));
 
             $htmlContent = $this->driver->getPageSource();
 
             $textToAssert = 'Processed Form Details';
-            $isTextPresent = strpos($htmlContent, $textToAssert) !== false;
+
+            if (!strpos($htmlContent, $textToAssert)) throw new \Exception('Preenchimento não concluido.');
 
             $feedback['success'] = true;
-            $feedback['message'] = $isTextPresent;
+            $feedback['code'] = 200;
+            $feedback['message'] = 'Preenchimento concluido com sucesso.';
         } catch (\Exception $exception) {
+            $feedback['code'] = $exception->getCode();
             $feedback['message'] = $exception->getMessage();
         } finally {
             $this->driver->quit();
